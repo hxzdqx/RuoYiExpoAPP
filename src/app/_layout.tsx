@@ -10,6 +10,7 @@ import { useEffect } from 'react';
 // import { useColorScheme } from 'react-native';
 import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context';
 
+import { useUserStore } from '@/store/userStore';
 export {
   // 捕获布局组件抛出的任何错误。
   ErrorBoundary,
@@ -20,7 +21,7 @@ export {
  */
 export const unstable_settings = {
   // 确保在' /modal '上重新加载时保留一个后退按钮。
-  initialRouteName: 'tabs',
+  initialRouteName: '(tabs)',
 };
 
 // 防止启动画面自动隐藏之前的资产加载完成。
@@ -37,6 +38,7 @@ const theme = createTheme({
 });
 
 export default function RootLayout() {
+  const storeInit = useUserStore((state) => state.init);
   const [loaded, error] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
     ...FontAwesome.font,
@@ -56,6 +58,7 @@ export default function RootLayout() {
   if (!loaded) {
     return null;
   }
+  storeInit();
 
   return <RootLayoutNav />;
 }
@@ -65,7 +68,10 @@ function RootLayoutNav() {
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>
       <ThemeProvider theme={theme}>
         <Stack>
-          <Stack.Screen name="tabs" options={{ headerShown: false, headerTitleAlign: 'center' }} />
+          <Stack.Screen
+            name="(tabs)"
+            options={{ headerShown: false, headerTitleAlign: 'center' }}
+          />
           <Stack.Screen
             name="modal"
             options={{ title: '模拟页', presentation: 'modal', headerTitleAlign: 'center' }}

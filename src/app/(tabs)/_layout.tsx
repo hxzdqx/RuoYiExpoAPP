@@ -43,7 +43,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="work"
         options={{
           title: '工作台',
           headerTitleAlign: 'center',
@@ -53,7 +53,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="my"
+        name="mine"
         options={{
           title: '我的',
           // 标题位置

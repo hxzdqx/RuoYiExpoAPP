@@ -10,3 +10,5 @@
 [ui库：React Native Elements](https://reactnativeelements.com/docs)
 
 [api: Apisauce](https://github.com/infinitered/apisauce)
+
+[轮播图](https://github.com/leecade/react-native-swiper)

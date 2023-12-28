@@ -1,22 +1,25 @@
 import { Text, Image, Input, Button } from '@rneui/themed';
+import { Redirect, useRouter } from 'expo-router';
 import React, { useState, useRef, useEffect, PropsWithChildren } from 'react';
 import { View, ViewStyle, ImageStyle, TextStyle, TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import { getCodeImg } from '@/api/login';
 import { Screen } from '@/components/Screen';
-import { useUserStore, UserStore } from '@/store/userStore';
+import { useUserStore } from '@/store/userStore';
+// import { useUserStore } from '@/store/userStore';
 
 const logoPng = require('@/assets/logo.png');
-
-console.log(logoPng);
 
 interface ErrorMessages {
   [key: string]: string;
 }
 
 export default function Page() {
-  const userStore = useUserStore() as UserStore;
+  // const Login = useUserStore((state) => state.Login);
+  const token = useUserStore((state) => state.token);
+  const Login = useUserStore((state) => state.Login);
+  const router = useRouter();
   // 安全文本
   const [secureText, setSecureText] = useState<boolean>(true);
   // 验证错误信息
@@ -68,16 +71,19 @@ export default function Page() {
         code: '',
       });
     }
-    const res = await userStore.Login({ username, password, code, uuid });
-    console.log(res);
+    await Login({ username, password, code, uuid });
+    router.replace('/(tabs)');
   };
 
   // 获取图形验证码
   const getCode = async () => {
-    const res = await getCodeImg();
-    console.log('getCode', res.data);
+    const { data } = await getCodeImg();
 
-    setCodeUrl('data:image/gif;base64,' + res.data!.img);
+    setCodeUrl('data:image/gif;base64,' + data!.img);
+    setLoginForm({
+      ...loginForm,
+      uuid: data!.uuid,
+    });
 
     // if (this.captchaEnabled) {
     //   this.codeUrl = 'data:image/gif;base64,' + res.img;
@@ -85,17 +91,56 @@ export default function Page() {
     // }
   };
 
-  const initData = () => {
-    userNameRef.current?.setNativeProps({ value: loginForm.username });
-    passwordRef.current?.setNativeProps({ value: loginForm.password });
-    codeRef.current?.setNativeProps({ value: loginForm.code });
+  /**
+   * @description: 账号 输入
+   * @param {string} value - The value of the username input
+   * @returns {void}
+   */
+  const onUsernameChange = (value: string) => {
+    setLoginForm({
+      ...loginForm,
+      username: value,
+    });
+    setErrorMessages({
+      ...errorMessages,
+      username: '',
+    });
   };
 
+  /**
+   * @description: 密码输入
+   */
+  const onPasswordChange = (value: string) => {
+    setLoginForm({
+      ...loginForm,
+      password: value,
+    });
+    setErrorMessages({
+      ...errorMessages,
+      password: '',
+    });
+  };
+
+  /**
+   * @description:  验证码输入
+   */
+  const onCodeChange = (value: string) => {
+    setLoginForm({
+      ...loginForm,
+      code: value,
+    });
+    setErrorMessages({
+      ...errorMessages,
+      code: '',
+    });
+  };
   useEffect(() => {
     getCode();
-    // 初始化数据
-    initData();
   }, []);
+
+  if (token) {
+    return <Redirect href="/(tabs)" />;
+  }
 
   return (
     <Screen>
@@ -106,16 +151,18 @@ export default function Page() {
         </View>
         <Input
           ref={userNameRef}
+          onChangeText={onUsernameChange}
           placeholder="请输入账号"
-          label="账号"
+          value={loginForm.username}
           errorMessage={errorMessages.username}
           leftIcon={<Icon name="user" size={20} />}
         />
         <Input
           ref={passwordRef}
+          onChangeText={onPasswordChange}
           errorMessage={errorMessages.password}
-          label="密码"
           secureTextEntry={secureText}
+          value={loginForm.password}
           leftIcon={<Icon name="lock" size={20} />}
           rightIcon={
             <Icon.Button
@@ -132,15 +179,20 @@ export default function Page() {
           <View style={{ flex: 2 }}>
             <Input
               ref={codeRef}
+              value={loginForm.code}
+              onChangeText={onCodeChange}
               errorMessage={errorMessages.code}
-              label="验证码"
               leftIcon={<Icon name="code" size={20} />}
               placeholder="请输入验证码"
             />
           </View>
           <View style={{ flex: 1 }}>
             {codeUrl && (
-              <Image source={{ uri: codeUrl }} style={{ width: 100, height: 38, marginLeft: 10 }} />
+              <Image
+                source={{ uri: codeUrl }}
+                onPress={getCode}
+                style={{ width: 100, height: 45, marginLeft: 10 }}
+              />
             )}
           </View>
         </View>
@@ -164,6 +216,7 @@ const logoContent: ViewStyle = {
   flexWrap: 'wrap',
   alignContent: 'center',
   justifyContent: 'center',
+  marginBottom: 80,
 };
 
 const logoStyle: ImageStyle = {

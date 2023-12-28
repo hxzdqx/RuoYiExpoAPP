@@ -34,7 +34,7 @@ class Stotafe {
     }
   }
 
-  setObj(key: string, value: object): void {
+  setObj(key: string, value: any): void {
     try {
       AsyncStorage.setItem(key, JSON.stringify(value));
     } catch (error) {
@@ -46,13 +46,12 @@ class Stotafe {
     try {
       return AsyncStorage.getItem(key);
     } catch (error) {
-      console.error(error);
       // eslint-disable-next-line prefer-promise-reject-errors
-      return Promise.reject(null);
+      return Promise.reject(error);
     }
   }
 
-  async getObj(key: string): Promise<object | null> {
+  async getObj(key: string): Promise<any | null> {
     try {
       const value = await AsyncStorage.getItem(key);
       if (value) {
@@ -60,9 +59,8 @@ class Stotafe {
       }
       return null;
     } catch (error) {
-      console.error(error);
       // eslint-disable-next-line prefer-promise-reject-errors
-      return Promise.reject(null);
+      return Promise.reject(error);
     }
   }
 
@@ -82,5 +80,7 @@ class Stotafe {
     }
   }
 }
+
+new Stotafe().set(constant.name, 'xxxxxx');
 
 export default Stotafe;

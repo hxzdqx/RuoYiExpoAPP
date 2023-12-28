@@ -1,6 +1,10 @@
-import { ApiResponse, ApisauceInstance, create } from 'apisauce';
+import { ApisauceInstance, create } from 'apisauce';
+import { useRouter } from 'expo-router';
+import { Alert } from 'react-native';
+
 import { ApiConfig } from './api.types';
 import { getToken } from './auth';
+import errorCode from './errorCode';
 
 /**
  * @description: 配置apisauce实例。
@@ -16,6 +20,7 @@ export const defaultApiConfig: ApiConfig = {
 export class Api {
   apisauce: ApisauceInstance;
   config: ApiConfig;
+  router = useRouter();
 
   /**
    * 设置API实例。保持轻量级!
@@ -38,11 +43,34 @@ export class Api {
         request.headers.Authorization = `Bearer ${_token}`;
       }
     });
-    // this.apisauce.addAsyncResponseTransform((response) => async () => {
-    //   if (response.ok) {
-    //     return response.data;
-    //   }
-    // });
+    this.apisauce.addAsyncResponseTransform((response) => async () => {
+      if (response.ok) {
+        const code: number = response.data.code || 200;
+        const msg = errorCode[code.toString()] || response.data.msg || errorCode['default'];
+        switch (code) {
+          case 401:
+            // token过期
+            Alert.alert('提示', '登录状态已过期，请重新登录?', [
+              {
+                text: '确认',
+                onPress: () => {
+                  this.router.replace('/login');
+                },
+                style: 'destructive',
+              },
+            ]);
+            break;
+          case 500:
+            Alert.alert('提示', msg);
+            break;
+          case 200:
+            break;
+          default:
+            Alert.alert('提示', msg);
+            break;
+        }
+      }
+    });
   }
 
   getApisauce() {
