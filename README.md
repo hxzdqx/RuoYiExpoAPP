@@ -1,5 +1,6 @@
-<h1>expo RuoyiApp</h1>
-### 库
+# expo RuoyiApp
+
+## 库
 
 [存储库](https://react-native-async-storage.github.io/async-storage/docs/install)
 
@@ -12,3 +13,12 @@
 [api: Apisauce](https://github.com/infinitered/apisauce)
 
 [轮播图](https://github.com/leecade/react-native-swiper)
+
+## 打包
+
+```cmd
+<!-- 开发构建 -->
+eas build --profile development --platform android
+<!--  -->
+eas build --platform android
+```

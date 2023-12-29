@@ -24,7 +24,6 @@ export default function TabLayout() {
         name="index"
         options={{
           title: '首页',
-          headerTitleAlign: 'center',
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
           headerRight: () => (
             <Link href="/modal" asChild>
@@ -46,7 +45,6 @@ export default function TabLayout() {
         name="work"
         options={{
           title: '工作台',
-          headerTitleAlign: 'center',
           tabBarIcon: ({ color }) => (
             <AntDesign size={28} name="appstore-o" style={{ marginBottom: -3 }} color={color} />
           ),
@@ -57,7 +55,6 @@ export default function TabLayout() {
         options={{
           title: '我的',
           // 标题位置
-          headerTitleAlign: 'center',
           tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
         }}
       />

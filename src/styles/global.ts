@@ -3,9 +3,10 @@ import { StyleSheet } from 'react-native';
 export const globalStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    width: '100%',
+    backgroundColor: '#f5f6f7',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
   },
   textCenter: {
     textAlign: 'center',
@@ -15,5 +16,15 @@ export const globalStyles = StyleSheet.create({
   },
   f13: {
     fontSize: 13,
+  },
+  textWhite: {
+    color: '#fff',
+  },
+  containerBox: {
+    padding: 15,
+    width: '100%',
+  },
+  contentSection: {
+    backgroundColor: '#fff',
   },
 });

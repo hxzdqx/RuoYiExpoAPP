@@ -81,6 +81,4 @@ class Stotafe {
   }
 }
 
-new Stotafe().set(constant.name, 'xxxxxx');
-
 export default Stotafe;
