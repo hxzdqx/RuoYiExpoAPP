@@ -1,5 +1,5 @@
 {
-  "scheme": "your-app-scheme",
+  "scheme": "com.hxzdqx.emsapp",
   "expo": {
     "name": "ems-app",
     "slug": "ems-app",
@@ -15,9 +15,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
@@ -32,10 +30,7 @@
       "favicon": "./src/assets/favicon.png",
       "bundler": "metro"
     },
-    "plugins": [
-      "expo-router",
-      "expo-localization"
-    ],
+    "plugins": ["expo-router", "expo-localization"],
     "extra": {
       "router": {
         "origin": false

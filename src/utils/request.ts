@@ -3,8 +3,10 @@ import { useRouter } from 'expo-router';
 import { Alert } from 'react-native';
 
 import { ApiConfig } from './api.types';
-import { getToken } from './auth';
+import { getToken, removeToken } from './auth';
 import errorCode from './errorCode';
+
+import Storage from '@/utils/storage';
 
 /**
  * @description: 配置apisauce实例。
@@ -21,6 +23,7 @@ export class Api {
   apisauce: ApisauceInstance;
   config: ApiConfig;
   router = useRouter();
+  storage = new Storage();
 
   /**
    * 设置API实例。保持轻量级!
@@ -54,6 +57,8 @@ export class Api {
               {
                 text: '确认',
                 onPress: () => {
+                  removeToken();
+                  this.storage.clean();
                   this.router.replace('/login');
                 },
                 style: 'destructive',

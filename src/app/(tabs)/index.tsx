@@ -1,24 +1,12 @@
 import { Image, Text } from '@rneui/themed';
-import { Redirect } from 'expo-router';
 // import { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 
 import { View } from '@/components/Themed';
-import { useUserStore } from '@/store/userStore';
 
 const logoPng = require('@/assets/logo.png');
 
 export default function Page() {
-  const { token } = useUserStore();
-
-  if (!token) {
-    return (
-      <View>
-        <Redirect href="/login" />
-      </View>
-    );
-  }
-
   return (
     <View style={styles.container}>
       <Image style={styles.logo} source={logoPng} />

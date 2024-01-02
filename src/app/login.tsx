@@ -19,6 +19,7 @@ export default function Page() {
   // const Login = useUserStore((state) => state.Login);
   const token = useUserStore((state) => state.token);
   const Login = useUserStore((state) => state.Login);
+  const GetInfo = useUserStore((state) => state.GetInfo);
   const router = useRouter();
   // 安全文本
   const [secureText, setSecureText] = useState<boolean>(true);
@@ -72,7 +73,8 @@ export default function Page() {
       });
     }
     await Login({ username, password, code, uuid });
-    router.replace('/(tabs)');
+    await GetInfo();
+    router.replace('/');
   };
 
   // 获取图形验证码
@@ -198,7 +200,12 @@ export default function Page() {
         </View>
 
         <View style={pageStyle}>
-          <Button color="#1890ff" title="登录" onPress={handleLogin} />
+          <Button
+            color="#ffffff"
+            titleStyle={{ color: '#000' }}
+            title="登录"
+            onPress={handleLogin}
+          />
         </View>
       </View>
     </Screen>

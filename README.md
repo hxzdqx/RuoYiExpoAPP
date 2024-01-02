@@ -22,3 +22,7 @@ eas build --profile development --platform android
 <!--  -->
 eas build --platform android
 ```
+
+"android": {
+"buildType": "apk"
+}

@@ -13,12 +13,14 @@ function TopInfo() {
       avatar: state.avatar,
     };
   });
+  console.log(name, avatar);
+  console.log('头像', avatar);
   return (
     <View style={styles.headerSection}>
       <View style={styles.flexBox}>
         <View style={styles.avatarBox}>
           {avatar ? (
-            <Image source={{ uri: avatar! }} style={styles.avatar} />
+            <Image source={avatar!} style={styles.avatar} />
           ) : (
             <Icon name="person-circle-outline" size={60} color="#fff" />
           )}
